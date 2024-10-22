@@ -1,0 +1,37 @@
+input:
+  kafka_franz:
+    consumer_group: ""
+    seed_brokers: [ "redpanda-0:9092" ]
+    topics: [ "benthos" ]
+    tls:
+      enabled: false
+      skip_cert_verify: true
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+      - type: file
+        file:
+          path: '/tmp/data.txt'
+          codec: "delim:\n"
+      - type: file
+        file:
+          path: '/tmp/data1.txt'
+          codec: "delim:\n"
+      - type: sql_insert
+        sql_insert:
+          driver: postgres
+          dsn: postgres://test:test@database:5432/default_database?sslmode=disable
+          table: my_table  # Ensure the table name matches your PostgreSQL table
+          columns: [user_id, email, product_url, price, timestamp, index, topic, embedding]
+          args_mapping: |
+            root = [
+              this.user_id,          # Map to the user_id column
+              this.email,            # Map to the email column
+              this.product_url,      # Map to the product_url column
+              this.price,            # Map to the price column
+              this.timestamp,        # Map to the timestamp column
+              this.index,            # Map to the index column
+              meta("kafka_topic"),    # Use Kafka topic metadata for the topic column
+              "[" + this.embedding.map_each(num -> num.string()).join(", ") + "]"
+            ]       
