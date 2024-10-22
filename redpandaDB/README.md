@@ -82,11 +82,11 @@ git clone <repo-url> cd <repo-directory>
 docker-compose up -d
 ```
 
-#### **3,Verify the setup:**
+#### **3, Verify the setup:**
 
 Access the Redpanda Console at: http://localhost:8080
 
-#### **4,Stopping the Services**
+#### **4, Stopping the Services**
 
 ```
 docker-compose down
