@@ -70,30 +70,59 @@ This repository contains a docker-compose.yml configuration for setting up Redpa
 
 ### **Setup and Run**
 
-#### **1, Clone this repository:**
+#### **1. Clone this repository:**
 
 ```
 git clone <repo-url> cd <repo-directory>
 ```
 
-#### **2, Run the services:**
+#### **2. Run the services:**
 
 ```
 docker-compose up -d
 ```
 
-#### **3, Verify the setup:**
+#### **3. Verify the setup:**
+
 
 Access the Redpanda Console at: http://localhost:8080
 
-#### **4, Stopping the Services**
+#### **4. Validate File Outputs**
+Use vi or cat to check if data is written to /tmp/data.txt and /tmp/data1.txt within the container:
+
+```
+docker exec -it <benthos_container_id> /bin/sh
+/tmp $ cat data.txt
+/tmp $ cat data1.txt
+```
+
+#### **5. Validate Data in PostgreSQL**
+After inserting data via Benthos, connect to PostgreSQL and query the table to check if records have been inserted:
+
+```
+docker exec -it <postgres_container_id> /bin/sh
+# psql -h localhost -U test -d default_database
+default_database=# SELECT * FROM my_table;
+```
+
+#### **6. Check Logs for Errors**
+Monitor Benthos logs to ensure there are no errors during data processing. Inside the container, run:
+
+```
+docker logs <benthos_container_id>
+```
+
+#### **7. Stopping the Services**
 
 ```
 docker-compose down
 ```
-To shut down and delete the containers along with all your cluster data:
 
+Note : To shut down and delete the containers along with all your cluster data:
+
+```
 docker compose down -v
+```
 
 ### **Additional Notes**
 
