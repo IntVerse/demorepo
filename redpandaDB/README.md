@@ -91,6 +91,9 @@ Access the Redpanda Console at: http://localhost:8080
 ```
 docker-compose down
 ```
+To shut down and delete the containers along with all your cluster data:
+
+docker compose down -v
 
 ### **Additional Notes**
 
