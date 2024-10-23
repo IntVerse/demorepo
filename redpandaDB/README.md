@@ -40,7 +40,7 @@ This repository contains a docker-compose.yml configuration for setting up Redpa
 
       - Mounted Volumes:
 
-          _./streams for configuring tasks and connectors._
+            - ./streams for configuring tasks and connectors.
 
       - Command: Executes the Benthos and Redpanda connect YAML files from /streams.
 
